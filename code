@@ -1,0 +1,57 @@
+-- Create the database
+CREATE DATABASE hospital_management;
+USE hospital_management;
+
+-- Table: Patients
+CREATE TABLE Patients (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE,
+    gender ENUM('Male', 'Female', 'Other'),
+    phone_number VARCHAR(15),
+    address TEXT
+);
+
+-- Table: Doctors
+CREATE TABLE Doctors (
+    doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    specialty VARCHAR(100),
+    phone_number VARCHAR(15),
+    email VARCHAR(100)
+);
+
+-- Table: Appointments
+CREATE TABLE Appointments (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    appointment_date DATETIME,
+    reason TEXT,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+-- Table: Medical_Records
+CREATE TABLE Medical_Records (
+    record_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    visit_date DATE,
+    diagnosis TEXT,
+    treatment TEXT,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+-- Table: Billing
+CREATE TABLE Billing (
+    bill_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    amount DECIMAL(10,2),
+    billing_date DATE,
+    paid BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)
+);
